@@ -8,11 +8,31 @@ The IRL algorithms are based on the following paper:
 
 ## Usage Notes
 ### Installation
-From within your conda environment:
+1. `git clone` this repo
+1. `conda create -n venv_irl python=3.9`
+1. `conda activate venv_irl`
 1. Install [pytorch](https://pytorch.org/)
-1. `conda install -c anaconda pyqt5`
-2. `pip install -e .`
-3. `python agents_window.py`
+1. `conda install -c anaconda pyqt`
+1. cd to repo root
+1. `pip install -e .`
+   
+### Collect data and train an aagent
+1. Run `python agents_window.py`
+1. Press `Add environment`, then select from the drop-down
+1. Press `Create new agent`
+1. Add some demonstrations:
+    1. Press `New game`
+    1. Control the agent: WASD/arrow keys to move, 'p' to pickup, 'o' to drop, 'i' or space to interact (e.g. with a door), backspace/delete to reset
+        1. Commands are defined in `play_minigrid.py`, `qt_key_handler`
+    1. When you finish the episode, the `Save` button will activate -- press it to save the demonstration
+    1. Collect at least 2 demonstrations
+1. Press the -> button next to each demonstration to add it to the list that will be used for training (rank as described)
+1. Press `Train` to start training
+1. To see training progress and example runs, press "Info" next to the agent in the Agents list
+1. See training plots:
+    1. In a terminal, cd to repo root
+    1. run `tensorboard --logdir data --port 6006`
+    1. In a browser, navigate to `localhost:6006`
 
 
 ## MiniGrid environment
