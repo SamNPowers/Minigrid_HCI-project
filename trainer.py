@@ -84,7 +84,7 @@ class PolicyTrainerThread(Thread):
             train_policy(self.environment, reward_net_arg=reward_net_path, policy_net_key=self.policy_net_key, callbacks=self.policy_callbacks)
         else:
             episodes = self.policy.max_episodes - self.policy.episode
-            self.policy.fit(episodes, reward_loader=lambda: load_net(os.path.join(rewards_dir(), self.environment, self.policy.reward_net_key), True), callbacks=self.policy_callbacks)
+            self.policy.fit(episodes, reward_loader=lambda: load_net(os.path.join(rewards_dir(), "reward_nets", self.environment, self.policy.reward_net_key), True), callbacks=self.policy_callbacks)
 
     def interrupt(self):
         self.running = False
