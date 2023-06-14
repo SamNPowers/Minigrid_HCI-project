@@ -3,10 +3,11 @@ import shutil
 
 from PyQt5.QtCore import QObject, pyqtSignal
 import os
+from utils import games_dir
 
 env = 'MiniGrid-Empty-6x6-v0'
 
-games_path = 'games'
+games_path = games_dir()
 
 
 class GamesModel(QObject):

@@ -3,7 +3,7 @@
 
 import json
 import os
-import pickle
+import cloudpickle as pickle
 from datetime import datetime
 import importlib
 import argparse, argcomplete
@@ -44,7 +44,7 @@ def train_policy(env_name, policy_net=default_policy, reward_net_arg=None, polic
         policy_net_dir = module_path.rsplit("/", 1)[0] if "/" in module_path else ""  # TODO linux only
         if policy_net_key is None:
             policy_net_key = file_radix + "^" + datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-        output_dir = os.path.join(policy_net_dir, env_name, policy_net_key)
+        output_dir = os.path.join(policies_dir(), policy_net_dir, env_name, policy_net_key)
         os.makedirs(output_dir)
         with open(os.path.join(output_dir, "args.json"), "wt") as file:
             json.dump(args_log, file)

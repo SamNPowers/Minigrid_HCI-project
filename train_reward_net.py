@@ -5,6 +5,7 @@ import os
 from glob import glob
 import argparse
 import torch
+from utils import games_dir, rewards_dir
 
 from modelsummary import summary
 
@@ -22,7 +23,7 @@ def split(my_list, split_fraction):
 
 def train_reward(env_name, reward_net_file=default_reward, games=None, callbacks=[]):
 
-    games_path = 'games'
+    games_path = games_dir()
     
     # use GPU if available, otherwise use CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -74,7 +75,7 @@ def train_reward(env_name, reward_net_file=default_reward, games=None, callbacks
     net_module = importlib.import_module(".".join(module_path.split(os.sep)))
     reward_net_dir = module_path.rsplit("/", 1)[0] if "/" in module_path else ""  # TODO linux only
     timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-    output_dir = os.path.join(reward_net_dir, env_name, file_radix + "^" + timestamp)
+    output_dir = os.path.join(rewards_dir(), reward_net_dir, env_name, file_radix + "^" + timestamp)
     reward_net = net_module.get_net(get_input_shape(), folder=output_dir).to(device)
     reward_net.fit(X_train, max_epochs=20, X_val=X_val, train_games_info=train_games_info, val_games_info=val_games_info, autosave=True, epochs_for_checkpoint=10, train_games=games, callbacks=callbacks)
 

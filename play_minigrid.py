@@ -97,7 +97,7 @@ class Game:
         if self.agent_view:
             self.refresh_gui(obs)
         else:
-            img = self.env.render('pixmap')
+            img = self.env.render('rgb_array')
             self.refresh_gui(img)
 
     def reset(self):
@@ -144,7 +144,7 @@ class Game:
             self.folder = os.path.join(self.games_directory, self.env.unwrapped.spec.id, str(self.game_name))
 
             screenshot_file = 'game' + str(self.env.step_count) + '.png'
-            pixmap = self.env.render('pixmap')
+            pixmap = self.env.render('rgb_array')
             self.screenshots = [(screenshot_file, pixmap)]
 
         return self
@@ -167,7 +167,7 @@ class Game:
             # print('rewards', self.game_info['rewards'])
             # Save screenshots
             screenshot_file = 'game' + str(self.env.step_count) + '.png'
-            pixmap = self.env.render('pixmap')
+            pixmap = self.env.render('rgb_array')
             self.screenshots.append((screenshot_file, pixmap))
 
         self._refresh_gui(self.obs)
@@ -260,7 +260,7 @@ class Game:
             action = self.env.actions.drop
         elif qt_key_event.key() == Qt.Key_I or qt_key_event.key() == Qt.Key_Space:
             action = self.env.actions.toggle
-        elif self.handle_special_keys and qt_key_event.key() == Qt.Key_Enter:
+        elif self.handle_special_keys and (qt_key_event.key() == Qt.Key_Enter or qt_key_event.key() == Qt.Key_Return):
             action = self.env.actions.done
         elif self.handle_special_keys and qt_key_event.key() == Qt.Key_Backspace:
             self.reset()

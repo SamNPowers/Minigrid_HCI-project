@@ -1,6 +1,6 @@
 import io
 import os
-import pickle
+import cloudpickle as pickle
 from abc import abstractmethod
 import json
 from contextlib import redirect_stdout
@@ -112,7 +112,8 @@ class PolicyNet(nn.Module):
             episode_loss = torch.zeros(1).to(self.current_device())
             while True:
                 ''' run an episode '''
-                states, actions, true_rewards, rewards, discounted_rewards, length = self.run_episode(max_length=self.env.max_steps, reward_net=reward, render=render)
+                max_length = get_max_steps() if get_max_steps() is not None else self.env.max_steps
+                states, actions, true_rewards, rewards, discounted_rewards, length = self.run_episode(max_length=max_length, reward_net=reward, render=render)
 
                 gradient_not_zero = False
 

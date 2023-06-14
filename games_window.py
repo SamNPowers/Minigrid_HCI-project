@@ -9,7 +9,6 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal, QEvent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QLabel, QPushButton, QHBoxLayout
-from sklearn.ensemble._gradient_boosting import np_float32
 
 from games_model import GamesModel
 from games_view import GamesView
@@ -19,7 +18,7 @@ from play_minigrid import Game
 from utils import *
 
 env_used = 'MiniGrid-Empty-6x6-v0'
-games_path = 'games'
+games_path = games_dir()
 
 folder_name = '2019-12-11_13:40:14'
 
@@ -84,7 +83,8 @@ class NewGameView(QDialog):
         # self.ui.game_buttonBox.accepted.connect(self.accept)
 
         self.show()
-        self.game = Game(self.env, games_directory=games_dir(), refresh_callback=self.update_gui, end_callback=self.enable_save, handle_special_keys=False, max_games=1, autosave=False)
+        # TODO spowers: handle_special_keys was False before, but True seems more useful -- why was it this way?
+        self.game = Game(self.env, games_directory=games_dir(), refresh_callback=self.update_gui, end_callback=self.enable_save, handle_special_keys=True, max_games=1, autosave=False)
         self.ui.game_buttonBox.button(QtWidgets.QDialogButtonBox.Save).clicked.connect(self.on_save)
         self.keyPressEvent = self.game.qt_key_handler
 

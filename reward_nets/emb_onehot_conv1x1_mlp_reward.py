@@ -48,8 +48,8 @@ class EmbMlpRewardNet(RewardNet):
         e2 = self.embedding_ch2(x[:, 2, ...]).permute(0, 3, 1, 2)
 
         x = torch.cat((e0, one_hot_ch1, e2), 1)
-        x = F.relu(self.affine1(F.relu(self.conv(x).view(batch_size, -1))))
-        s = steps.to(self.current_device()).float().view(batch_size, -1)
+        x = F.relu(self.affine1(F.relu(self.conv(x).reshape(batch_size, -1))))
+        s = steps.to(self.current_device()).float().reshape(batch_size, -1)
 
         return self.affine2(torch.cat((x, s), 1))
 

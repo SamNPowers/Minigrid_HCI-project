@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon, QPixmap, QMovie
 from PyQt5.QtCore import QByteArray, QTimer
 # from Ui_mainWindow import Ui_MainWindow
 
+from utils import games_dir
 # from Ui_minigrid import Ui_MainWindow
 from Ui_newGame import Ui_new_game_Dialog
 # from Ui_main_scrollbar import Ui_MainWindow
@@ -71,7 +72,7 @@ from Ui_scrollbar_v2 import Ui_MainWindow
 #
 
 path_of_image = 'games/MiniGrid-Empty-6x6-v0/2019-12-11_13:40:14/game'
-games_path = 'games'
+games_path = games_dir()
 env = 'MiniGrid-Empty-6x6-v0'
 
 # os.path.join(folder, 'game.json')

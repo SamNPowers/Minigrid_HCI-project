@@ -6,6 +6,15 @@ The IRL algorithms are based on the following paper:
 *Extrapolating Beyond Suboptimal Demonstrations via Inverse Reinforcement Learning from Observations*
 [[1]](#Trex).
 
+## Usage Notes
+### Installation
+From within your conda environment:
+1. Install [pytorch](https://pytorch.org/)
+1. `conda install -c anaconda pyqt5`
+2. `pip install -e .`
+3. `python agents_window.py`
+
+
 ## MiniGrid environment
 Gym-minigrid [[2]](#minigrid) is a minimalistic gridworld package for OpenAI Gym.
 

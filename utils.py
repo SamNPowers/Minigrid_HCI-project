@@ -1,5 +1,5 @@
 import os
-import pickle
+import cloudpickle as pickle
 from glob import glob
 
 import torch
@@ -9,15 +9,26 @@ import numpy as np
 
 
 def policies_dir():
-    return "policy_nets"
+    return "data/trained_models"
 
 
 def rewards_dir():
-    return "reward_nets"
+    return "data/trained_models"
 
 
 def games_dir():
-    return "games"
+    return "data/games"
+
+
+def plot_dir():
+    return "data/plots"
+
+
+def get_max_steps():
+    # TODO spowers: the longer this is, the more chance the agent has of succeeding during the task, but the less frequently
+    # training steps are taken, because episodes are run to completion currently
+    # Set to None to use the default specified by the environment
+    return 200
 
 
 # number of episodes for policy training

@@ -142,14 +142,14 @@ class AgentDetailWindow(QMainWindow):
         # self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
         policy_name = policies_dir()
-        policies = [int(el.split('-')[1].split('.')[0]) for el in os.listdir(os.path.join(policy_name, self.environment, self.agent_key)) if el.endswith('.pth')]
+        policies = [int(el.split('-')[1].split('.')[0]) for el in os.listdir(os.path.join(policy_name, "policy_nets", self.environment, self.agent_key)) if el.endswith('.pth')]
 
         # new value is bigger than max value
         if s_val > int(max(policies) / episodes_for_checkpoint):
             s_val = int(max(policies) / episodes_for_checkpoint)
             self.ui.sliderTraining.setValue(s_val)
 
-        policy_net = os.path.join(policy_name, self.environment, self.agent_key, 'policy_net-' + str(s_val * episodes_for_checkpoint) + '.pth')
+        policy_net = os.path.join(policy_name, "policy_nets", self.environment, self.agent_key, 'policy_net-' + str(s_val * episodes_for_checkpoint) + '.pth')
         new_agent = load_net(policy_net)
         if new_agent.episode != self.game_thread.agent:
             self.game_thread.set_agent(new_agent)
@@ -167,7 +167,7 @@ class GameThread(Thread):
         state = self.env.reset()
         done = False
         while self._running:
-            img = self.env.render("pixmap")
+            img = self.env.render("rgb_array")
             try:
                 self.game_widget.setPixmap(nparray_to_qpixmap(img))
             except RuntimeError:

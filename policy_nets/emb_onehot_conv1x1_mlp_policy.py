@@ -42,7 +42,7 @@ class MlpPolicyNet(PolicyNet):
 
         x = torch.cat((e0, one_hot_ch1, e2), 1)
 
-        act_probs = self.affine2(F.relu(self.affine1(F.relu(self.conv(x).view(batch_size, -1)))))
+        act_probs = self.affine2(F.relu(self.affine1(F.relu(self.conv(x).reshape(batch_size, -1)))))
         return act_probs
 
 

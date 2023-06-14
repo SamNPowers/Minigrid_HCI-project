@@ -15,9 +15,10 @@ from torch.distributions.categorical import Categorical
 from itertools import count
 from datetime import datetime
 from plot_rewards import plot_reward
+from utils import games_dir, plot_dir
 
-games_path = 'games'
-plot_path = 'figures'
+games_path = games_dir()
+plot_path = plot_dir()
 
 # A simple, memoryless MLP agent. Last layer are logits (scores for
 # which higher values represent preferred actions.
@@ -103,7 +104,7 @@ def run_episode(env, policy, length, save, gamma=0.99):
 
         # Save screenshots
         screenshot_name = 'game' + str(env.step_count) + '.png'
-        pixmap = env.render('pixmap')
+        pixmap = env.render('rgb_array')
         screenshots.append((screenshot_name, pixmap))
 
         state = state_filter(state)

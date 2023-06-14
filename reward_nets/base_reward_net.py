@@ -2,7 +2,7 @@ import copy
 import io
 import json
 import os
-import pickle
+import cloudpickle as pickle
 from abc import abstractmethod
 from contextlib import redirect_stdout
 from glob import glob

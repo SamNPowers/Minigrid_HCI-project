@@ -1,5 +1,5 @@
 import importlib
-import pickle
+import cloudpickle as pickle
 from datetime import datetime
 import json
 import os
@@ -28,9 +28,14 @@ class AgentsModel(QObject):
     def __init__(self):
         super().__init__(parent=None)
         self._agents = {}
-        self.agents_dir = policies_dir()
-        self.rewards_dir = rewards_dir()
+        self.agents_dir = os.path.join(policies_dir(), "policy_nets")
+        self.rewards_dir = os.path.join(rewards_dir(), "reward_nets")
         self.games_dir = games_dir()
+
+        os.makedirs(self.agents_dir, exist_ok=True)
+        os.makedirs(self.rewards_dir, exist_ok=True)
+        os.makedirs(self.games_dir, exist_ok=True)
+
         self.device = auto_device()
         self.locks = {}
         self.load_from_disk()

@@ -10,10 +10,9 @@ from Ui_scrollbar_v2 import Ui_MainWindow
 from PyQt5.QtGui import QPixmap, QColor, QCursor, QIcon, QPalette
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QTimer, pyqtSignal, QPropertyAnimation, pyqtProperty, Qt
+from utils import games_dir
 
 env_used = 'MiniGrid-Empty-6x6-v0'
-games_path = 'games'
-
 folder_name = '2020-01-05_15:04:54'
 
 
@@ -187,6 +186,7 @@ class GameView(QWidget):
         super().__init__(parent)
         self.game_key = game_key
         self.games_model = games_model
+        self.games_path = games_dir()
         self.env = env
         self.has_left_arrow = has_left_arrow
         self.has_right_arrow = has_right_arrow
@@ -210,7 +210,7 @@ class GameView(QWidget):
             self.move_left_btn.clicked.connect(lambda: self.games_model.move_game(self.parent().objectName(), game_key))
 
         self.game_label = QLabel(game_key)
-        game_info_path = os.path.join(games_path, self.env, game_key, 'game.json')
+        game_info_path = os.path.join(self.games_path, self.env, game_key, 'game.json')
         with open(game_info_path) as json_file:
             game_info = json.load(json_file)
             
@@ -221,10 +221,10 @@ class GameView(QWidget):
         self.horiz.addWidget(self.game_label)
 
         # game imgs
-        imgs_names = [elem for elem in os.listdir(os.path.join(games_path, env, game_key)) if elem.endswith(".png")]
+        imgs_names = [elem for elem in os.listdir(os.path.join(self.games_path, env, game_key)) if elem.endswith(".png")]
         imgs_names.sort()
-        self.game_dir = os.path.join(games_path, env, game_key)
-        pixmap = QPixmap(os.path.join(games_path, env, game_key, 'game0.png'))
+        self.game_dir = os.path.join(self.games_path, env, game_key)
+        pixmap = QPixmap(os.path.join(self.games_path, env, game_key, 'game0.png'))
         self.img_label = QLabel()
         self.img_label.setScaledContents(True)
         self.img_label.setPixmap(pixmap)
