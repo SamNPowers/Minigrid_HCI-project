@@ -106,6 +106,13 @@ class RewardNet(nn.Module):
 
         self.train_games = train_games
 
+        # See note from spowers below
+        num_traj_pairs = (len(X_train) + 1)/2
+        desired_num_batches = max(1, int(num_traj_pairs * num_subtrajectories * subtrajectory_length // batch_size))
+        max_epochs *= desired_num_batches
+
+        print(f"Increasing max epochs by factor {desired_num_batches}")
+
         ''' print info to open output directory and to open tensorboard '''
         print('output directory:\n"' + os.path.abspath(self.folder) + '"')
         tb_path = os.path.abspath(os.path.join(self.folder, "tensorboard"))
@@ -175,13 +182,8 @@ class RewardNet(nn.Module):
             # Since the sub-trajectories are sampled from pre-computed scores, if we have num_mini_batches > 1,
             # the first minibatch will change the weights used to compute scores used in later mini_batches,
             # causing in-place update issues.
-            # The simple fix used here (only training on 1 "mini batch") was chosen to:
-            # a. Be minimally invasive (vs a large re-write that would re-compute the scores for each mini batch)
-            # b. Hold the number of updates (i.e. the total amount of (non-unique) data) used in training fixed,
-            # independent of the number of trajectories. In some ways the original "num_mini_batch" logic would
-            # "unfairly" (perhaps) bias towards more trajectories just because more data is seen *total*
-            # (not just "more unique data").
-            # In theory this doesn't matter if both are trained to completion (i.e. to plateau)....
+            # Instead of increasing the num mini batches we are increasing the number of epochs (above), so the
+            # total training should be consistent, but will have an inflated number of epochs compared to expected max
             num_mini_batches = 1  # spowers: original was: len(pairs) // batch_size
             avg_batch_loss = 0
 
