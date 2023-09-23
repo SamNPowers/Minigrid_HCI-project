@@ -170,7 +170,19 @@ class RewardNet(nn.Module):
 
             # make mini batches
             batch_size = batch_size if batch_size < len(pairs) else len(pairs)
-            num_mini_batches = len(pairs) // batch_size
+
+            # Note from spowers:
+            # Since the sub-trajectories are sampled from pre-computed scores, if we have num_mini_batches > 1,
+            # the first minibatch will change the weights used to compute scores used in later mini_batches,
+            # causing in-place update issues.
+            # The simple fix used here (only training on 1 "mini batch") was chosen to:
+            # a. Be minimally invasive (vs a large re-write that would re-compute the scores for each mini batch)
+            # b. Hold the number of updates (i.e. the total amount of (non-unique) data) used in training fixed,
+            # independent of the number of trajectories. In some ways the original "num_mini_batch" logic would
+            # "unfairly" (perhaps) bias towards more trajectories just because more data is seen *total*
+            # (not just "more unique data").
+            # In theory this doesn't matter if both are trained to completion (i.e. to plateau)....
+            num_mini_batches = 1  # spowers: original was: len(pairs) // batch_size
             avg_batch_loss = 0
 
             for b in range(num_mini_batches):
